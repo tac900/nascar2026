@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fantasy NASCAR 2026 — Through Race 15, Michigan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --asphalt:#14161b;
+  --asphalt-2:#1a1d24;
+  --panel:#191c23;
+  --panel-2:#21252e;
+  --line:#2b303b;
+  --line-soft:#23272f;
+  --ink:#e8e9ee;
+  --ink-dim:#8b93a4;
+  --ink-faint:#5a6172;
+  --red:#d33a32;
+  --white-l:#c9bfa6;
+  --blue:#4f8bd6;
+  --gold:#e0b54a;
+  --green:#4eae6a;
+  --red-glow:rgba(211,58,50,.14);
+  --white-glow:rgba(201,191,166,.12);
+  --blue-glow:rgba(79,139,214,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--asphalt);
+  color:var(--ink);
+  font-family:'Saira',sans-serif;
+  font-weight:400;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(79,139,214,.05), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(211,58,50,.05), transparent 55%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.012) 0 2px, transparent 2px 5px);
+}
+
+/* ---- header ---- */
+.topbar{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding:26px 34px 20px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(255,255,255,.018), transparent);
+}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+.brand .flag{
+  width:30px;height:22px;border-radius:2px;flex-shrink:0;align-self:center;
+  background-image:repeating-conic-gradient(#0e0f13 0 25%, #e8e9ee 0 50%);
+  background-size:11px 11px;
+  border:1px solid #000;box-shadow:0 0 0 1px var(--line);
+}
+.brand h1{
+  font-family:'Saira Condensed',sans-serif;font-weight:800;
+  font-size:34px;letter-spacing:.5px;line-height:.9;text-transform:uppercase;
+}
+.brand h1 .yr{color:var(--gold);}
+.brand .sub{
+  font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.5px;
+  color:var(--ink-dim);margin-top:6px;
+}
+.season-meter{text-align:right;min-width:210px;}
+.season-meter .lbl{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);}
+.season-meter .val{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:26px;line-height:1;margin-top:3px;}
+.season-meter .val b{color:var(--gold);}
+.track{height:6px;background:var(--asphalt-2);border:1px solid var(--line);border-radius:3px;margin-top:9px;overflow:hidden;position:relative;}
+.track .run{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:2px 0 0 2px;}
+.track .checker{position:absolute;top:0;right:0;height:100%;width:14px;background-image:repeating-conic-gradient(#0e0f13 0 25%, #fff 0 50%);background-size:6px 6px;opacity:.35;}
+
+/* ---- layout ---- */
+.wrap{max-width:1320px;margin:0 auto;padding:24px 34px 60px;}
+
+.nav{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:26px;border-bottom:1px solid var(--line);}
+.nav button{
+  appearance:none;background:none;border:none;cursor:pointer;color:var(--ink-faint);
+  font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;
+  text-transform:uppercase;padding:11px 18px 13px;border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .18s, border-color .18s;display:flex;align-items:center;gap:8px;
+}
+.nav button:hover{color:var(--ink);}
+.nav button .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+.nav button.active{color:var(--ink);}
+.nav button[data-view="overall"].active{border-color:var(--gold);}
+.nav button[data-view="red"].active{border-color:var(--red);}
+.nav button[data-view="white"].active{border-color:var(--white-l);}
+.nav button[data-view="blue"].active{border-color:var(--blue);}
+.nav button[data-view="drivers"].active{border-color:var(--green);}
+
+.view{display:none;animation:rise .4s ease both;}
+.view.show{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+/* ---- overall: three columns ---- */
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.lgcol{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.lgcol-head{padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;justify-content:space-between;}
+.lgcol-head .name{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:20px;letter-spacing:1.5px;text-transform:uppercase;}
+.lgcol-head .meta{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink-faint);text-align:right;}
+.lg-red .name{color:var(--red);} .lg-white .name{color:var(--white-l);} .lg-blue .name{color:var(--blue);}
+.lg-red{box-shadow:inset 3px 0 0 var(--red);} .lg-white{box-shadow:inset 3px 0 0 var(--white-l);} .lg-blue{box-shadow:inset 3px 0 0 var(--blue);}
+
+.mrow{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line-soft);position:relative;}
+.mrow:last-child{border-bottom:none;}
+.mrow .pos{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:var(--ink-faint);text-align:center;}
+.mrow.p1 .pos{color:var(--gold);} .mrow.p2 .pos{color:#b9c0cf;} .mrow.p3 .pos{color:#bd7b4a;}
+.mrow .who .owner{font-weight:600;font-size:14.5px;letter-spacing:.2px;}
+.mrow .who .pair{font-family:'Spline Sans Mono',monospace;font-size:10.5px;color:var(--ink-dim);margin-top:2px;}
+.mrow .pts{text-align:right;font-family:'Spline Sans Mono',monospace;}
+.mrow .pts .big{font-weight:600;font-size:16px;}
+.mrow.p1 .pts .big{color:var(--gold);}
+.mrow .pts .avg{font-size:10px;color:var(--ink-faint);margin-top:1px;}
+.mrow .bar{grid-column:1/-1;height:3px;background:var(--asphalt-2);border-radius:2px;margin-top:9px;overflow:hidden;}
+.mrow .bar i{display:block;height:100%;border-radius:2px;}
+.lg-red .bar i{background:var(--red);} .lg-white .bar i{background:var(--white-l);} .lg-blue .bar i{background:var(--blue);}
+
+/* ---- single league: ladder ---- */
+.league-title{
+  font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;
+  letter-spacing:1.5px;text-transform:uppercase;line-height:1;
+  display:flex;align-items:center;gap:13px;margin-bottom:18px;
+}
+.league-title .dot{width:15px;height:15px;border-radius:3px;flex-shrink:0;}
+.league-title .count{
+  font-family:'Spline Sans Mono',monospace;font-weight:400;font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint);
+}
+#v-red .league-title{color:var(--red);} #v-red .league-title .dot{background:var(--red);}
+#v-white .league-title{color:var(--white-l);} #v-white .league-title .dot{background:var(--white-l);}
+#v-blue .league-title{color:var(--blue);} #v-blue .league-title .dot{background:var(--blue);}
+.ladder{display:flex;flex-direction:column;gap:9px;}
+.lcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:border-color .18s;}
+.lcard:hover{border-color:#384150;}
+.lcard.p1{box-shadow:inset 0 0 0 1px rgba(224,181,74,.35);}
+.lhead{display:grid;grid-template-columns:48px 1fr 150px 92px 88px 22px;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;}
+.lhead .rk{font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:30px;line-height:1;color:var(--ink-faint);text-align:center;}
+.lcard.p1 .rk{color:var(--gold);} .lcard.p2 .rk{color:#b9c0cf;} .lcard.p3 .rk{color:#bd7b4a;}
+.lhead .owner{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:21px;letter-spacing:.6px;}
+.lhead .pair{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink-dim);margin-top:3px;}
+.kpi{text-align:right;}
+.kpi .k{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-faint);}
+.kpi .v{font-family:'Spline Sans Mono',monospace;font-size:19px;font-weight:600;margin-top:2px;}
+.kpi .v.gold{color:var(--gold);}
+.kpi .v.dim{color:var(--ink-dim);font-size:16px;}
+.chev{justify-self:center;color:var(--ink-faint);transition:transform .22s;font-size:13px;}
+.lcard.open .chev{transform:rotate(90deg);}
+
+.ldetail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .26s ease;}
+.lcard.open .ldetail{grid-template-rows:1fr;}
+.ldetail > div{overflow:hidden;}
+.dblock{border-top:1px solid var(--line);padding:14px 18px;background:var(--asphalt-2);}
+.drv{margin-bottom:14px;}
+.drv:last-child{margin-bottom:0;}
+.drv-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px;}
+.drv-top .nm{font-weight:600;font-size:14px;}
+.drv-top .nm .car{font-family:'Spline Sans Mono',monospace;color:var(--ink-faint);font-size:11px;margin-left:6px;}
+.drv-top .tot{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--ink-dim);}
+.drv-top .tot b{color:var(--ink);font-weight:600;}
+.spark{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;align-items:end;height:44px;}
+.spark .b{position:relative;background:var(--line);border-radius:2px 2px 0 0;min-height:2px;transition:filter .15s;}
+.spark .b:hover{filter:brightness(1.5);}
+.spark .b span{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--ink-dim);opacity:0;transition:opacity .15s;white-space:nowrap;}
+.spark .b:hover span{opacity:1;}
+.lg-red .spark .b{background:linear-gradient(180deg,var(--red),rgba(211,58,50,.45));}
+.lg-white .spark .b{background:linear-gradient(180deg,var(--white-l),rgba(201,191,166,.4));}
+.lg-blue .spark .b{background:linear-gradient(180deg,var(--blue),rgba(79,139,214,.4));}
+.racelbl{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-top:5px;}
+.racelbl span{font-family:'Spline Sans Mono',monospace;font-size:8px;color:var(--ink-faint);text-align:center;}
+
+/* ---- drivers table ---- */
+.dtools{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:12px;}
+.dtools .hint{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink-faint);}
+.sortbtns{display:flex;gap:6px;}
+.sortbtns button{appearance:none;cursor:pointer;background:var(--panel);border:1px solid var(--line);color:var(--ink-dim);
+  font-family:'Spline Sans Mono',monospace;font-size:11px;padding:6px 12px;border-radius:6px;transition:all .15s;}
+.sortbtns button:hover{color:var(--ink);border-color:#3a4150;}
+.sortbtns button.on{background:var(--panel-2);color:var(--gold);border-color:rgba(224,181,74,.4);}
+.dtable{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.dt-row{display:grid;grid-template-columns:38px 52px 1fr 200px 64px 58px;align-items:center;gap:14px;padding:11px 18px;border-bottom:1px solid var(--line-soft);}
+.dt-row.head{background:var(--panel-2);border-bottom:1px solid var(--line);}
+.dt-row:last-child{border-bottom:none;}
+.dt-row.head span{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-faint);}
+.dt-row.head .r{text-align:right;}
+.dt-rk{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:var(--ink-faint);text-align:center;}
+.dt-car{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--gold);font-weight:600;}
+.dt-name{font-weight:500;font-size:14.5px;}
+.dt-spark{display:grid;grid-template-columns:repeat(14,1fr);gap:2px;align-items:end;height:30px;}
+.dt-spark .b{background:#39404e;border-radius:1px;min-height:2px;}
+.dt-spark .b.hi{background:var(--green);}
+.dt-tot{text-align:right;font-family:'Spline Sans Mono',monospace;font-size:16px;font-weight:600;}
+.dt-avg{text-align:right;font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--ink-dim);}
+.dt-name .none{color:var(--ink-faint);font-style:italic;font-size:12px;}
+
+footer{text-align:center;padding:30px 20px;border-top:1px solid var(--line);margin-top:10px;
+  font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink-faint);line-height:1.7;}
+
+@media(max-width:980px){
+  .cols{grid-template-columns:1fr;}
+  .topbar{flex-direction:column;align-items:flex-start;gap:18px;}
+  .season-meter{text-align:left;}
+}
+@media(max-width:620px){
+  .wrap{padding:20px 16px 50px;}.topbar{padding:20px 16px;}
+  .lhead{grid-template-columns:40px 1fr 70px 20px;}
+  .lhead .pair-cell .pair,.lhead .kpi.avg,.lhead .kpi.gap{display:none;}
+  .dt-row{grid-template-columns:32px 44px 1fr 60px;}
+  .dt-spark,.dt-row .r.avg{display:none;}
+  .brand h1{font-size:27px;}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="flag"></span>
+    <div>
+      <h1>Fantasy NASCAR <span class="yr">'26</span></h1>
+      <div class="sub" id="brandsub"></div>
+    </div>
+  </div>
+  <div class="season-meter">
+    <div class="lbl">Season Progress</div>
+    <div class="val"><b id="rrun">15</b> / <span id="rtot">36</span> races</div>
+    <div class="track"><i class="run" id="runbar"></i><span class="checker"></span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="nav" id="nav">
+    <button data-view="overall" class="active"><span class="dot" style="background:var(--gold)"></span>Overall</button>
+    <button data-view="red"><span class="dot" style="background:var(--red)"></span>Red</button>
+    <button data-view="white"><span class="dot" style="background:var(--white-l)"></span>White</button>
+    <button data-view="blue"><span class="dot" style="background:var(--blue)"></span>Blue</button>
+    <button data-view="drivers"><span class="dot" style="background:var(--green)"></span>Drivers</button>
+  </nav>
+
+  <section class="view show" id="v-overall"><div class="cols" id="overall-cols"></div></section>
+  <section class="view" id="v-red"><h2 class="league-title" id="title-red"></h2><div class="ladder" id="ladder-red"></div></section>
+  <section class="view" id="v-white"><h2 class="league-title" id="title-white"></h2><div class="ladder" id="ladder-white"></div></section>
+  <section class="view" id="v-blue"><h2 class="league-title" id="title-blue"></h2><div class="ladder" id="ladder-blue"></div></section>
+  <section class="view" id="v-drivers">
+    <div class="dtools">
+      <div class="hint">Season points per driver across 14 races. Bars show each race; brighter = season best.</div>
+      <div class="sortbtns" id="sortbtns">
+        <button data-sort="total" class="on">By points</button>
+        <button data-sort="car">By car #</button>
+      </div>
+    </div>
+    <div class="dtable" id="dtable"></div>
+  </section>
+</div>
+
+<footer id="foot"></footer>
+
+<script>
+const DATA = {"season":2025,"lastRace":"Michigan","racesRun":15,"totalRaces":36,"raceLabels":["Race 01","Race 02","Race 03","Race 04","Race 05","Race 06","Race 07","Race 08","Race 09","Race 10","Race 11","Race 12","Race 13","Race 14","Race 15"],"leagues":{"red":[{"owner":"Dehaven","drivers":[{"name":"Elliott","car":9,"races":[33,38,33,14,40,26,55,15,41,35,69,13,1,37,22],"total":472},{"name":"Reddick","car":45,"races":[58,67,61,39,30,70,28,33,71,27,42,41,53,37,12],"total":669}],"points":1141,"ranking":1,"avg":31.69},{"owner":"Gass","drivers":[{"name":"Hamlin","car":11,"races":[6,24,28,47,70,26,56,41,52,22,43,21,60,62,58],"total":616},{"name":"Gibbs","car":54,"races":[14,1,48,36,39,33,49,59,38,3,8,42,53,24,21],"total":468}],"points":1084,"ranking":2,"avg":30.11},{"owner":"Hackman","drivers":[{"name":"Bell","car":20,"races":[2,16,34,54,51,18,30,19,30,29,1,20,50,38,11],"total":403},{"name":"Buscher","car":17,"races":[39,22,19,30,35,42,18,24,29,50,36,30,10,8,31],"total":423}],"points":826,"ranking":3,"avg":22.94},{"owner":"Kilhefner","drivers":[{"name":"Blaney","car":12,"races":[27,31,33,65,23,42,41,53,13,7,27,34,41,37,29],"total":503},{"name":"Kezelowski","car":6,"races":[3,14,5,26,1,23,34,3,35,15,32,7,25,4,3],"total":230}],"points":733,"ranking":5,"avg":20.36},{"owner":"Dani","drivers":[{"name":"Larson","car":5,"races":[21,13,31,36,48,19,30,54,54,1,3,14,54,23,44],"total":445},{"name":"Bubba","car":23,"races":[12,21,5,37,41,10,1,30,39,1,28,9,15,10,40],"total":299}],"points":744,"ranking":4,"avg":20.67},{"owner":"Gehman","drivers":[{"name":"Byron","car":24,"races":[25,25,26,32,49,34,47,7,30,2,31,1,28,15,25],"total":377},{"name":"Logano","car":22,"races":[17,34,13,10,20,21,21,17,11,41,11,20,29,23,32],"total":320}],"points":697,"ranking":6,"avg":19.36},{"owner":"Tony","drivers":[{"name":"Briscoe","car":19,"races":[1,43,1,1,29,32,23,45,38,8,20,35,27,39,27],"total":369},{"name":"Hosevar","car":77,"races":[36,22,22,23,22,4,46,33,7,9,1,9,14,27,45],"total":320}],"points":689,"ranking":7,"avg":19.14}],"white":[{"owner":"Rob","drivers":[{"name":"Elliott","car":9,"races":[33,38,33,14,40,26,55,15,41,35,69,13,1,37,22],"total":472},{"name":"Reddick","car":45,"races":[58,67,61,39,30,70,28,33,71,27,42,41,53,37,12],"total":669}],"points":1141,"ranking":1,"avg":31.69},{"owner":"Devin","drivers":[{"name":"Hamlin","car":11,"races":[6,24,28,47,70,26,56,41,52,22,43,21,60,62,58],"total":616},{"name":"Hosevar","car":77,"races":[3,14,5,21,15,33,20,38,28,55,41,9,14,27,45],"total":368}],"points":984,"ranking":2,"avg":27.33},{"owner":"Ray","drivers":[{"name":"Blaney","car":12,"races":[27,31,33,65,23,42,41,53,13,7,27,34,41,37,29],"total":503},{"name":"Kezelowski","car":6,"races":[17,34,13,10,20,55,24,23,35,15,32,7,25,4,3],"total":317}],"points":820,"ranking":6,"avg":22.78},{"owner":"Derrick","drivers":[{"name":"Bell","car":20,"races":[2,16,34,54,51,18,30,19,30,29,1,20,50,38,11],"total":403},{"name":"Buscher","car":17,"races":[39,22,19,30,35,42,18,24,29,50,36,30,10,8,31],"total":423}],"points":826,"ranking":4,"avg":22.94},{"owner":"Gehr","drivers":[{"name":"Byron","car":24,"races":[25,25,26,32,49,34,47,7,30,2,31,1,28,15,25],"total":377},{"name":"Gibbs","car":54,"races":[29,7,25,20,39,33,49,59,38,3,8,42,53,24,21],"total":450}],"points":827,"ranking":3,"avg":22.97},{"owner":"Kevin","drivers":[{"name":"Larson","car":5,"races":[21,13,31,36,48,19,30,54,54,1,3,14,54,23,44],"total":445},{"name":"Wallace","car":23,"races":[37,48,31,37,41,10,1,30,39,1,28,9,15,10,40],"total":377}],"points":822,"ranking":5,"avg":22.83},{"owner":"Dustin","drivers":[{"name":"Briscoe","car":19,"races":[1,43,1,1,29,32,23,45,38,8,20,35,27,39,27],"total":369},{"name":"Logano","car":22,"races":[36,22,22,23,22,4,46,33,7,9,1,10,29,23,32],"total":319}],"points":688,"ranking":7,"avg":19.11},{"owner":"Jack-n-Bob","drivers":[{"name":"Conner Z.","car":88,"races":[4,9,23,8,5,19,11,4,8,11,21,21,1,1,1],"total":147},{"name":"E. Jones","car":43,"races":[16,13,3,27,17,27,16,14,14,14,35,18,30,26,44],"total":314}],"points":461,"ranking":8,"avg":12.81}],"blue":[{"owner":"Carole","drivers":[{"name":"Elliott","car":9,"races":[33,38,33,14,40,26,55,15,41,35,69,13,1,37,22],"total":472},{"name":"Reddick","car":45,"races":[58,67,61,39,30,70,28,33,71,27,42,41,53,37,12],"total":669}],"points":1141,"ranking":1,"avg":31.69},{"owner":"Shenk","drivers":[{"name":"Hamlin","car":11,"races":[6,24,28,47,70,26,56,41,52,22,43,21,60,62,58],"total":616},{"name":"Logano","car":22,"races":[36,22,22,23,22,4,46,33,7,9,1,10,29,23,32],"total":319}],"points":935,"ranking":2,"avg":25.97},{"owner":"Jason","drivers":[{"name":"Larson","car":5,"races":[21,13,31,36,48,19,30,54,54,1,3,14,54,23,44],"total":445},{"name":"Buscher","car":17,"races":[39,22,19,30,35,42,18,24,29,50,36,30,10,8,31],"total":423}],"points":868,"ranking":3,"avg":24.11},{"owner":"Burrey","drivers":[{"name":"Blaney","car":12,"races":[27,31,33,65,23,42,41,53,13,7,27,34,41,37,29],"total":503},{"name":"Bubba","car":23,"races":[17,34,13,10,41,10,1,30,39,1,28,9,15,10,40],"total":298}],"points":801,"ranking":4,"avg":22.25},{"owner":"Butch","drivers":[{"name":"Briscoe","car":19,"races":[1,43,1,1,29,32,23,45,38,8,20,35,27,39,27],"total":369},{"name":"Van Gisbergen","car":97,"races":[7,32,45,26,1,23,34,3,1,17,20,68,33,32,7],"total":349}],"points":718,"ranking":5,"avg":19.94},{"owner":"Kyle","drivers":[{"name":"Byron","car":24,"races":[25,25,26,32,49,34,47,7,30,2,31,1,28,15,25],"total":377},{"name":"Gibbs","car":54,"races":[3,14,5,0,39,33,49,1,38,3,8,42,53,24,21],"total":333}],"points":710,"ranking":6,"avg":19.72},{"owner":"Sasko","drivers":[{"name":"Bell","car":20,"races":[2,16,34,54,51,18,30,19,30,29,1,20,50,38,11],"total":403},{"name":"K. Busch","car":8,"races":[29,7,25,20,9,16,13,12,2,27,22,35,0,0,0],"total":217}],"points":620,"ranking":7,"avg":17.22}]},"drivers":[{"car":1,"name":"R. Chastain","races":[17,34,13,10,20,21,21,17,11,41,11,20,2,1,21],"total":260},{"car":2,"name":"A. Cindric","races":[12,21,5,13,19,38,40,23,25,29,22,39,1,18,26],"total":331},{"car":3,"name":"A. Dillon","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":4,"name":"N. Gragson","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":5,"name":"K. Larson","races":[21,13,31,36,48,19,30,54,54,1,3,14,54,23,44],"total":445},{"car":6,"name":"B. Kezelowski","races":[0,0,0,0,0,55,24,23,35,15,32,7,25,4,3],"total":223},{"car":7,"name":"Dainel Suarez","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":8,"name":"K. Busch","races":[29,7,25,20,9,16,13,12,2,27,22,35,0,0,0],"total":217},{"car":9,"name":"C. Elliot","races":[33,38,33,14,40,26,55,15,41,35,69,13,1,37,22],"total":472},{"car":10,"name":"T. Dillon","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":11,"name":"D. Hamlin","races":[6,24,28,47,70,26,56,41,52,22,43,21,60,62,58],"total":616},{"car":12,"name":"R. Blaney","races":[27,31,33,65,23,42,41,53,13,7,27,34,41,37,29],"total":503},{"car":15,"name":"T. Brown","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":16,"name":"A. Allmedinger","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":17,"name":"C. Buscher","races":[39,22,19,30,35,42,18,24,29,50,36,30,10,8,31],"total":423},{"car":19,"name":"C. Briscoe","races":[1,43,1,1,29,32,23,45,38,8,20,35,27,39,27],"total":369},{"car":20,"name":"C. Bell","races":[2,16,34,54,51,18,30,19,30,29,1,20,50,38,11],"total":403},{"car":21,"name":"J. Berry","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":22,"name":"J. Lagano","races":[36,22,22,23,22,4,46,33,7,9,1,10,29,23,32],"total":319},{"car":23,"name":"B. Wallace","races":[37,48,31,37,41,10,1,30,39,1,28,9,15,10,40],"total":377},{"car":24,"name":"W. Byron","races":[25,25,26,32,49,34,47,7,30,2,31,1,28,15,25],"total":377},{"car":31,"name":"D. Hemric","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":33,"name":"A. Hill","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":34,"name":"T. Gilliland","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":35,"name":"R. Herbst","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":38,"name":"Z. Smith","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":41,"name":"C. Custer","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":42,"name":"J. Nemecheck","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":43,"name":"E. Jones","races":[16,13,3,27,17,27,16,14,14,14,35,18,30,26,44],"total":314},{"car":44,"name":"JJ Yeley","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":45,"name":"T. Reddick","races":[58,67,61,39,30,70,28,33,71,27,42,41,53,37,12],"total":669},{"car":47,"name":"R. Stenhouse Jr.","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":48,"name":"A. Bowman","races":[3,14,5,0,0,0,0,1,19,37,35,12,20,13,18],"total":177},{"car":50,"name":"B Myers","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":51,"name":"C Ware","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":54,"name":"T. Gibbs","races":[14,1,48,36,39,33,49,59,38,3,8,42,53,24,21],"total":468},{"car":60,"name":"R. Prece","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":71,"name":"M. McDowell","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":77,"name":"C. Hosevar","races":[0,0,0,21,15,33,20,38,28,55,41,9,14,27,45],"total":346},{"car":78,"name":"K Legge","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":84,"name":"J. Johnson","races":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total":0},{"car":88,"name":"C Zilisch","races":[4,9,23,8,5,19,11,4,8,11,21,21,1,1,1],"total":147},{"car":97,"name":"S. Van Gisbergen","races":[7,32,45,26,1,23,34,3,1,17,20,68,33,32,7],"total":349}]};
+const COLOR = {red:'Red',white:'White',blue:'Blue'};
+const RUN = DATA.racesRun, TOT = DATA.totalRaces;
+
+/* header */
+document.getElementById('brandsub').textContent =
+  'Three-league owner standings \u00b7 Through Race ' + RUN + ' \u2014 ' + DATA.lastRace;
+document.getElementById('rrun').textContent = RUN;
+document.getElementById('rtot').textContent = TOT;
+document.getElementById('runbar').style.width = (RUN/TOT*100).toFixed(1) + '%';
+
+/* shared scale: highest owner total across all leagues */
+const ALL_OWNERS = Object.values(DATA.leagues).flat();
+const MAXPTS = Math.max(...ALL_OWNERS.map(o=>o.points));
+const BEST_RACE = Math.max(...DATA.drivers.flatMap(d=>d.races), 1);
+function ordSuffix(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+
+/* ---- overall mini columns ---- */
+function renderOverall(){
+  const host = document.getElementById('overall-cols');
+  host.innerHTML = ['red','white','blue'].map(c=>{
+    const league = DATA.leagues[c];
+    const leader = league[0];
+    const rows = league.map(o=>{
+      const pc = o.ranking===1?'p1':o.ranking===2?'p2':o.ranking===3?'p3':'';
+      return `<div class="mrow ${pc}">
+        <div class="pos">${o.ranking}</div>
+        <div class="who">
+          <div class="owner">${o.owner}</div>
+          <div class="pair">${o.drivers.map(d=>d.name+' #'+d.car).join('  \u00b7  ')}</div>
+        </div>
+        <div class="pts"><div class="big">${o.points}</div><div class="avg">${o.avg.toFixed(1)} avg</div></div>
+        <div class="bar"><i style="width:${(o.points/MAXPTS*100).toFixed(1)}%"></i></div>
+      </div>`;
+    }).join('');
+    return `<div class="lgcol lg-${c}">
+      <div class="lgcol-head">
+        <div class="name">${COLOR[c]} League</div>
+        <div class="meta">${league.length} owners<br>leader ${leader.owner}</div>
+      </div>
+      ${rows}
+    </div>`;
+  }).join('');
+}
+
+/* ---- single league ladder ---- */
+function renderLadder(c){
+  const league = DATA.leagues[c];
+  const title = document.getElementById('title-'+c);
+  title.innerHTML = `<span class="dot"></span>${COLOR[c]} League` +
+    `<span class="count">${league.length} owners · leader ${league[0].owner}</span>`;
+  const host = document.getElementById('ladder-'+c);
+  host.className = 'ladder lg-'+c;
+  host.innerHTML = league.map((o,idx)=>{
+    const pc = o.ranking===1?'p1':o.ranking===2?'p2':o.ranking===3?'p3':'';
+    const drv = o.drivers.map(d=>{
+      const dmax = Math.max(...d.races,1);
+      const bars = d.races.map((v,i)=>{
+        const h = v>0 ? Math.max(8,(v/BEST_RACE*100)) : 4;
+        return `<div class="b" style="height:${h}%"><span>R${String(i+1).padStart(2,'0')}: ${v}</span></div>`;
+      }).join('');
+      const labels = d.races.map((v,i)=>`<span>${i+1}</span>`).join('');
+      return `<div class="drv">
+        <div class="drv-top">
+          <div class="nm">${d.name}<span class="car">#${d.car}</span></div>
+          <div class="tot">season <b>${d.total}</b> pts \u00b7 best ${Math.max(...d.races)}</div>
+        </div>
+        <div class="spark">${bars}</div>
+        <div class="racelbl">${labels}</div>
+      </div>`;
+    }).join('');
+    return `<div class="lcard ${pc}" data-i="${idx}">
+      <div class="lhead" onclick="this.parentElement.classList.toggle('open')">
+        <div class="rk">${o.ranking}</div>
+        <div class="pair-cell">
+          <div class="owner">${o.owner}</div>
+          <div class="pair">${o.drivers.map(d=>d.name+' #'+d.car).join('   \u00b7   ')}</div>
+        </div>
+        <div class="kpi"><div class="k">Points</div><div class="v gold">${o.points}</div></div>
+        <div class="kpi avg"><div class="k">Per race</div><div class="v dim">${o.avg.toFixed(2)}</div></div>
+        <div class="kpi gap"><div class="k">Gap to P1</div><div class="v dim">${o.ranking===1?'\u2014':'-'+(DATA.leagues[c][0].points-o.points)}</div></div>
+        <div class="chev">\u25B6</div>
+      </div>
+      <div class="ldetail"><div><div class="dblock">${drv}</div></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- drivers table ---- */
+let driverSort = 'total';
+function renderDrivers(){
+  const host = document.getElementById('dtable');
+  const list = DATA.drivers.slice().filter(d=>d.car!=null);
+  if(driverSort==='total') list.sort((a,b)=>b.total-a.total || a.car-b.car);
+  else list.sort((a,b)=>a.car-b.car);
+  const head = `<div class="dt-row head">
+    <span class="r">#</span><span>Car</span><span>Driver</span>
+    <span>Race-by-race</span><span class="r">Total</span><span class="r avg">Avg</span>
+  </div>`;
+  const rows = list.map((d,i)=>{
+    const dmax = Math.max(...d.races,1);
+    const bars = d.races.map(v=>{
+      const h = v>0?Math.max(10,v/BEST_RACE*100):6;
+      const hi = v===dmax && v>0 ? ' hi':'';
+      return `<div class="b${hi}" style="height:${h}%" title="${v}"></div>`;
+    }).join('');
+    const avg = (d.total/RUN);
+    const ran = d.total>0;
+    return `<div class="dt-row">
+      <div class="dt-rk">${driverSort==='total'?(ran?i+1:'\u2014'):''}</div>
+      <div class="dt-car">#${d.car}</div>
+      <div class="dt-name">${d.name}${ran?'':' <span class="none">no starts</span>'}</div>
+      <div class="dt-spark">${bars}</div>
+      <div class="dt-tot">${d.total}</div>
+      <div class="dt-avg avg">${ran?avg.toFixed(1):'\u2014'}</div>
+    </div>`;
+  }).join('');
+  host.innerHTML = head + rows;
+}
+document.getElementById('sortbtns').addEventListener('click',e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  driverSort = b.dataset.sort;
+  document.querySelectorAll('#sortbtns button').forEach(x=>x.classList.toggle('on',x===b));
+  renderDrivers();
+});
+
+/* ---- nav ---- */
+document.getElementById('nav').addEventListener('click',e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  const v = b.dataset.view;
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('show'));
+  document.getElementById('v-'+v).classList.add('show');
+});
+
+/* ---- footer ---- */
+const champs = ['red','white','blue'].map(c=>COLOR[c]+': '+DATA.leagues[c][0].owner).join('   \u00b7   ');
+document.getElementById('foot').innerHTML =
+  'Standings leaders \u2014 '+champs+'<br>Built from "15 Michigan 2026 Fantasy League Results" \u00b7 '+
+  RUN+' of '+TOT+' races complete';
+
+renderOverall();
+renderLadder('red'); renderLadder('white'); renderLadder('blue');
+renderDrivers();
+</script>
+</body>
+</html>
