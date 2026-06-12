@@ -260,6 +260,9 @@ const DATA = {"season":2025,"lastRace":"Michigan","racesRun":15,"totalRaces":36,
 const COLOR = {red:'Red',white:'White',blue:'Blue'};
 const RUN = DATA.racesRun, TOT = DATA.totalRaces;
 
+/* keep every league's rows in ranking order regardless of source data order */
+Object.values(DATA.leagues).forEach(l=>l.sort((a,b)=>a.ranking-b.ranking));
+
 /* header */
 document.getElementById('brandsub').textContent =
   'Three-league owner standings \u00b7 Through Race ' + RUN + ' \u2014 ' + DATA.lastRace;
